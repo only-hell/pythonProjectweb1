@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css"/>
+    <title>{{title}}</title>
+    <style>
+body {
+background-color: #CCCCCC
+}
+</style>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-light bg-light">
+        <h1>Text Manager</h1>
+
+        {% if current_user.is_authenticated %}
+        <a class="navbar-brand" href="/logout">{{ current_user.name }} {{ current_user.surname }}</a>
+        {% else %}
+        <p>
+            <a class="btn btn-primary " href="/register">Register</a>
+            <a class="btn btn-success" href="/login">Log in</a>
+        </p>
+        {% endif %}
+    </nav>
+    <h4>Найдем все</h4>
+</header>
+<!-- Begin page content -->
+<main role="main" class="container">
+    {% block content %}{% endblock %}
+</main>
+{% if current_user.is_authenticated %}
+<video width="400" height="300" controls poster="video/duel.jpg">
+    <source src="static/video/video1.ogv" type='video/ogg; codecs="theora, vorbis"'>
+    <source src="static/video/video1.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+    <source src="static/video/video1.webm" type='video/webm; codecs="vp8, vorbis"'>
+    Тег video не поддерживается вашим браузером. <a href="video/duel.mp4">Скачайте видео</a>.
+  </video>
+<div class="parent">
+    <div class="block">
+        <h1>Поиск предложений по ключевым словам</h1>
+        <div> Text Manager - это программа для анализа введенного текста или текста из приложенного вами документа,
+        </div>
+        <div> и ответа на введенный вопрос. Вы можете ввести количество слов, по которому будет происходить анализ
+            текста.
+        </div>
+        <div> Если в предложениях из анализируемого текста количество выбранных вами слов</div>
+        <div> совпадает с количеством ключевых слов или их больше, то вам выведутся эти предложения.</div>
+        <br>
+        <div>Выберите способ приложения файла</div>
+        <form method="post" action="/add_type_text" enctype="multipart/form-data">
+            <input type="radio" name="type_text" value="none"> Не выбрано<br>
+            <input type="radio" name="type_text" value="file"> Загрузить файл<br>
+            <input type="radio" name="type_text" value="text"> Ввести текст<br>
+            <button type="submit">Add</button>
+        </form>
+        <br>
+        <form method="post" action="/add_text" enctype="multipart/form-data">
+            <div>Введите вопрос</div>
+            <input type="text" name="question">
+            <br>
+            <div>Введите номер</div>
+            <input type="number" name="number" min=0 max=5>
+            {% if type_text == ['file'] %}
+            <br>
+            <div>Выберите файл</div>
+            <input type="text" name="text" disabled>
+            <input type="file" name="file" accept=".doc, .docx">
+            {% elif type_text == ['text'] %}
+            <div>Введите текст</div>
+            <input type="text" name="text">
+            <input type="file" name="file" accept=".doc, .docx" disabled>
+            {% else %}
+            <div>Не выбрано</div>
+            <input type="text" name="text" disabled>
+            <input type="file" name="file" accept=".doc, .docx" disabled>
+            {% endif %}
+            <button type="submit">Add</button>
+        </form>
+        {% if messages == [] %}
+        <div>Результатов не найдено</div>
+
+
+        {% else %}
+        {% for message in messages %}
+        <div>{{ message.text }}</div>
+        {% endfor %}
+        {% endif %}
+
+        {% else %}
+
+        <div>Для использования возможностей сайта пожалуйста войдите в аккаунт</div>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>
