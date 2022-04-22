@@ -33,13 +33,13 @@ background-color: #CCCCCC
 <main role="main" class="container">
     {% block content %}{% endblock %}
 </main>
-{% if current_user.is_authenticated %}
-<video width="400" height="300" controls poster="video/poster.jpg">
+<video width="400" height="300" controls poster="static/video/poster.jpg">
     <source src="static/video/video1.ogv" type='video/ogg; codecs="theora, vorbis"'>
     <source src="static/video/video1.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
     <source src="static/video/video1.webm" type='video/webm; codecs="vp8, vorbis"'>
     Тег video не поддерживается вашим браузером. <a href="video/duel.mp4">Скачайте видео</a>.
   </video>
+{% if current_user.is_authenticated %}
 <div class="parent">
     <div class="block">
         <h1>Поиск предложений по ключевым словам</h1>
